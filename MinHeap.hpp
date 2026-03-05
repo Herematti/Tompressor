@@ -16,6 +16,7 @@ public:
 	Node(int x, uint8_t key);
 	Node(int x, bool leaf, uint8_t key);
 	Node(Node *x);
+	~Node();
 };
 
 class MinHeap

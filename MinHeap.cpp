@@ -38,6 +38,12 @@ Node::Node(Node *x)
 	key = x->key;
 }
 
+Node::~Node()
+{
+	delete left;
+	delete right;
+}
+
 MinHeap::MinHeap()
 {
 	storage.push_back(Node(-1));
