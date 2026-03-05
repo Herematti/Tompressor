@@ -14,7 +14,7 @@ Node huffmanize(MinHeap heap)
 		// cout << "heap";
 		// heap.print();
 
-		Node product(first->data + second->data);
+		Node product(first->frequency + second->frequency, false);
 		product.left = first;
 		product.right = second;
 
@@ -32,7 +32,12 @@ void printHuffmanHelper(Node *huffman)
 	{
 		return;
 	}
-	cout << huffman->data << " ";
+	cout << huffman->frequency;
+	if(huffman->isLeaf)
+	{
+		cout << "/" << (int)huffman->key;
+	}
+	cout << " ";
 
 	printHuffmanHelper(huffman->left);
 	printHuffmanHelper(huffman->right);
@@ -40,7 +45,13 @@ void printHuffmanHelper(Node *huffman)
 
 void printHuffman(Node huffman)
 {
-	cout << huffman.data << " ";
+	cout << huffman.frequency;
+	if(huffman.isLeaf)
+	{
+		cout << "/" << (int)huffman.key;
+	}
+	cout << " ";
+
 	printHuffmanHelper(huffman.left);
 	printHuffmanHelper(huffman.right);
 }
@@ -49,10 +60,10 @@ int main()
 {
 	MinHeap heapson;
 
-	heapson.addNode(5);
-	heapson.addNode(6);
-	heapson.addNode(5);
-	heapson.addNode(6);
+	heapson.addNode(5, 0b0);
+	heapson.addNode(6, 0b1);
+	heapson.addNode(5, 0b10);
+	heapson.addNode(6, 0b11);
 
 	Node huffmanerson = huffmanize(heapson);
 	printHuffman(huffmanerson);

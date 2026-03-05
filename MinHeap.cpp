@@ -6,16 +6,36 @@ using namespace std;
 
 Node::Node(int x)
 {
-	data = x;
+	frequency = x;
 	left = nullptr;
 	right = nullptr;
+	isLeaf = false;
+}
+Node::Node(int x, uint8_t key)
+{
+	frequency = x;
+	
+	left = nullptr;
+	right = nullptr;
+	isLeaf = false;
+	this->key = key;
+}
+Node::Node(int x, bool leaf, uint8_t key)
+{
+	frequency = x;
+	left = nullptr;
+	right = nullptr;
+	isLeaf = leaf;
+	this->key = key;
 }
 
 Node::Node(Node *x)
 {
-	data = x->data;
+	frequency = x->frequency;
 	left = x->left;
 	right = x->right;
+	isLeaf = x->isLeaf;
+	key = x->key;
 }
 
 MinHeap::MinHeap()
@@ -23,14 +43,14 @@ MinHeap::MinHeap()
 	storage.push_back(Node(-1));
 }
 
-void MinHeap::addNode(int val)
+void MinHeap::addNode(int val, uint8_t key)
 {
-	storage.push_back(Node(val));
+	storage.push_back(Node(val, true, key));
 	int id = storage.size() - 1;
 
 	while (id >= 2)
 	{
-		if (storage[id / 2].data > storage[id].data)
+		if (storage[id / 2].frequency > storage[id].frequency)
 		{
 			swap(storage[id / 2], storage[id]);
 		}
@@ -45,7 +65,7 @@ void MinHeap::addNode(Node val)
 
 	while (id >= 2)
 	{
-		if (storage[id / 2].data > storage[id].data)
+		if (storage[id / 2].frequency > storage[id].frequency)
 		{
 			swap(storage[id / 2], storage[id]);
 		}
@@ -57,7 +77,7 @@ void MinHeap::print()
 {
 	for (int i = 1; i < storage.size(); i++)
 	{
-		cout << storage[i].data << " ";
+		cout << storage[i].frequency << " ";
 	}
 	cout << "\n";
 }
@@ -86,12 +106,12 @@ Node MinHeap::pop()
 		int smallest = 2 * id;
 
 		if (smallest + 1 <= last &&
-			storage[smallest + 1].data < storage[smallest].data)
+			storage[smallest + 1].frequency < storage[smallest].frequency)
 		{
 			smallest++;
 		}
 
-		if (storage[id].data <= storage[smallest].data)
+		if (storage[id].frequency <= storage[smallest].frequency)
 			break;
 
 		swap(storage[id], storage[smallest]);
