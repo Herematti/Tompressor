@@ -4,44 +4,49 @@
 
 using namespace std;
 
+Node::Node()
+{
+	frequency = 0;
+	isLeaf = false;
+
+	left = nullptr;
+	right = nullptr;
+}
 Node::Node(int x)
 {
 	frequency = x;
+	isLeaf = false;
+
 	left = nullptr;
 	right = nullptr;
-	isLeaf = false;
 }
 Node::Node(int x, uint8_t key)
 {
 	frequency = x;
-	
-	left = nullptr;
-	right = nullptr;
 	isLeaf = false;
 	this->key = key;
+
+	left = nullptr;
+	right = nullptr;
 }
 Node::Node(int x, bool leaf, uint8_t key)
 {
 	frequency = x;
-	left = nullptr;
-	right = nullptr;
 	isLeaf = leaf;
 	this->key = key;
+
+	left = nullptr;
+	right = nullptr;
 }
 
 Node::Node(Node *x)
 {
 	frequency = x->frequency;
-	left = x->left;
-	right = x->right;
 	isLeaf = x->isLeaf;
 	key = x->key;
-}
 
-Node::~Node()
-{
-	delete left;
-	delete right;
+	left = x->left;
+	right = x->right;
 }
 
 MinHeap::MinHeap()
