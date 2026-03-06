@@ -33,6 +33,13 @@ HuffmanTree::HuffmanTree(MinHeap heap)
 		heap.addNode(*product);
 	}
 	root = heap.top();
+
+	if (root.isLeaf) // single node tree edge case -- root cannot be a leaf
+	{
+		root.left = new Node(root);
+		root.key = 0;
+		root.isLeaf = false;
+	}
 }
 
 void HuffmanTree::print()
