@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 #include <cstdint>
+#include <stdexcept>
 
 using namespace std;
 
@@ -17,19 +18,21 @@ int main(int argc, char *argv[])
 	// heapson.addNode(6, 0b1);
 	// heapson.addNode(5, 0b10);
 	// heapson.addNode(6, 0b11);
-
-	
-	auto file_path = argv[1];
-	map<uint8_t, int> mapped_bytes;
-
-	{ //holy scopes
-		vector<uint8_t> bytes = open_file(file_path);
-		mapped_bytes = map_bytes(bytes);
+	if (argc == 1)
+	{
+		throw runtime_error("no arguments given");
 	}
 
-	for (auto byte : mapped_bytes)
-	{
-		heapson.addNode(byte.second, byte.first);
+	auto file_path = argv[1];
+	vector<uint8_t> bytes = open_file(file_path);
+
+	{ // holy scopes
+		map<uint8_t, int> mapped_bytes = map_bytes(bytes);
+
+		for (auto byte : mapped_bytes)
+		{
+			heapson.addNode(byte.second, byte.first);
+		}
 	}
 
 	HuffmanTree huffman(heapson);
