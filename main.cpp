@@ -27,14 +27,12 @@ int main(int argc, char *argv[])
 	vector<uint8_t> bytes = open_file(file_path);
 
 	{ // holy scopes
-		"ok";
-	}
+		map<uint8_t, int> mapped_bytes = map_bytes(bytes);
 
-	map<uint8_t, int> mapped_bytes = map_bytes(bytes);
-
-	for (auto byte : mapped_bytes)
-	{
-		heapson.addNode(byte.second, byte.first);
+		for (auto byte : mapped_bytes)
+		{
+			heapson.addNode(byte.second, byte.first);
+		}
 	}
 
 	HuffmanTree huffman(heapson);
@@ -43,6 +41,19 @@ int main(int argc, char *argv[])
 	for (auto bit : binary_tree)
 	{
 		cout << bit;
+	}
+	cout << "\n";
+
+	auto mapa = huffman.map_tree();
+
+	for (auto map : mapa)
+	{
+		cout << map.first << "/";
+		for (auto bit : map.second)
+		{
+			cout << bit;
+		}
+		cout << " ";
 	}
 	cout << "\n";
 

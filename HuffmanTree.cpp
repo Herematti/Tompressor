@@ -100,3 +100,35 @@ vector<bool> HuffmanTree::binary_tree() // fun fact -- a <bool> vector uses only
 
 	return bits;
 }
+
+void HuffmanTree::map_tree_helper(Node *node, map<uint8_t, vector<bool>> &map_final, vector<bool> path)
+{
+	if (node == nullptr)
+	{
+		return;
+	}
+
+	if (node->isLeaf)
+	{
+		map_final[node->key] = path;
+		return;
+	}
+
+	auto left_path = path;
+	left_path.push_back(0);
+	map_tree_helper(node->left, map_final, left_path);
+
+	auto right_path = path;
+	right_path.push_back(1);
+	map_tree_helper(node->right, map_final, right_path);
+}
+
+map<uint8_t, vector<bool>> HuffmanTree::map_tree()
+{
+	map<uint8_t, vector<bool>> map_final;
+
+	map_tree_helper(root.left, map_final, {0});
+	map_tree_helper(root.right, map_final, {1});
+
+	return map_final;
+}
