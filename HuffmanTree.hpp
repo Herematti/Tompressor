@@ -8,10 +8,12 @@ class HuffmanTree
 private:
 	Node root;
 
-	void printHelper(Node *node);
+	void print_helper(Node *node);
+	void binary_tree_helper(Node *node, bool direction, vector<bool> &bits);
 
 public:
 	HuffmanTree(MinHeap heap);
 
 	void print();
+	vector<bool> binary_tree();
 };

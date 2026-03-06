@@ -27,14 +27,24 @@ int main(int argc, char *argv[])
 	vector<uint8_t> bytes = open_file(file_path);
 
 	{ // holy scopes
-		map<uint8_t, int> mapped_bytes = map_bytes(bytes);
+		"ok";
+	}
 
-		for (auto byte : mapped_bytes)
-		{
-			heapson.addNode(byte.second, byte.first);
-		}
+	map<uint8_t, int> mapped_bytes = map_bytes(bytes);
+
+	for (auto byte : mapped_bytes)
+	{
+		heapson.addNode(byte.second, byte.first);
 	}
 
 	HuffmanTree huffman(heapson);
+	vector<bool> binary_tree = huffman.binary_tree(); // ts just worked first try wtf?
+
+	for (auto bit : binary_tree)
+	{
+		cout << bit;
+	}
+	cout << "\n";
+
 	huffman.print();
 }
