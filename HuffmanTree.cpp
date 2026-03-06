@@ -42,6 +42,11 @@ HuffmanTree::HuffmanTree(MinHeap heap)
 	}
 }
 
+HuffmanTree::HuffmanTree()
+{
+	root = Node();
+}
+
 void HuffmanTree::print()
 {
 	cout << root.frequency;
