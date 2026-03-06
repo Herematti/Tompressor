@@ -47,13 +47,14 @@ int main(int argc, char *argv[])
 	}
 
 	HuffmanTree huffman(heapson);
+
 	vector<bool> binary_tree = huffman.binary_tree(); // ts just worked first try wtf?
 	cout << "\ntreeLength: " << binary_tree.size() << "\n";
-	// for (auto bit : binary_tree)
-	// {
-	// 	cout << bit;
-	// }
-	// cout << "\n";
+	for (auto bit : binary_tree)
+	{
+		cout << bit;
+	}
+	cout << "\nthis was the binary tree\n";
 
 	auto final_map = huffman.map_tree();
 

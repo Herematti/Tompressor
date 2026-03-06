@@ -1,4 +1,6 @@
 #include <iostream>
+#include <queue>
+#include <stack>
 #include "HuffmanTree.hpp"
 
 using namespace std;
@@ -11,7 +13,7 @@ void HuffmanTree::print_helper(Node *node)
 	cout << node->frequency;
 	if (node->isLeaf)
 	{
-		cout << "/" << (int)node->key;
+		cout << "/" << (char)node->key;
 	}
 	cout << " ";
 
@@ -42,9 +44,59 @@ HuffmanTree::HuffmanTree(MinHeap heap)
 	}
 }
 
-HuffmanTree::HuffmanTree()
+HuffmanTree::HuffmanTree(queue<bool> binary_tree)
 {
 	root = Node();
+	stack<Node*> s;
+	s.push(&root);
+
+	while(!binary_tree.empty())
+	{
+		cout << "queue size: " << binary_tree.size() << "\n";
+
+		Node* node = new Node();
+
+		node->isLeaf = binary_tree.front();
+		binary_tree.pop();
+
+		bool direction = binary_tree.front();
+		binary_tree.pop();
+
+		if(!direction)
+		{
+			if(s.top()->left != nullptr)
+			{
+				s.pop();
+			}
+			s.top()->left = node;
+		}
+		else
+		{
+			if(s.top()->right != nullptr)
+			{
+				s.pop();
+			}
+			s.top()->right = node;
+		}
+
+		if(!node->isLeaf)
+		{
+			s.push(node);
+		}
+		else
+		{
+			uint8_t key = 0;
+			for(int i = 0; i < 8; i++)
+			{
+				if (binary_tree.front())
+				{
+					key += 1 << (7 - i);
+				}
+				binary_tree.pop();
+			}
+			node->key = key;
+		}
+	}
 }
 
 void HuffmanTree::print()
