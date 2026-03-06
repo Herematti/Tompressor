@@ -85,5 +85,15 @@ vector<bool> final_binary(vector<uint8_t> bytes, vector<bool> binary_tree, map<u
 		}
 	}
 
+	// for(auto map : mapped_bytes)
+	// {
+	// 	cout << map.first << ":";
+	// 	for(auto s : map.second)
+	// 	{
+	// 		cout << s;
+	// 	}
+	// 	cout << "\n";
+	// }
+
 	return final_binary;
 }

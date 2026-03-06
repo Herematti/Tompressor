@@ -47,14 +47,14 @@ HuffmanTree::HuffmanTree(MinHeap heap)
 HuffmanTree::HuffmanTree(queue<bool> binary_tree)
 {
 	root = Node();
-	stack<Node*> s;
+	stack<Node *> s;
 	s.push(&root);
 
-	while(!binary_tree.empty())
+	while (!binary_tree.empty())
 	{
-		//cout << "queue size: " << binary_tree.size() << "\n";
+		// cout << "queue size: " << binary_tree.size() << "\n";
 
-		Node* node = new Node();
+		Node *node = new Node();
 
 		node->isLeaf = binary_tree.front();
 		binary_tree.pop();
@@ -62,9 +62,9 @@ HuffmanTree::HuffmanTree(queue<bool> binary_tree)
 		bool direction = binary_tree.front();
 		binary_tree.pop();
 
-		if(!direction)
+		if (!direction)
 		{
-			if(s.top()->left != nullptr)
+			while (s.top()->left != nullptr)
 			{
 				s.pop();
 			}
@@ -72,21 +72,21 @@ HuffmanTree::HuffmanTree(queue<bool> binary_tree)
 		}
 		else
 		{
-			if(s.top()->right != nullptr)
+			while (s.top()->right != nullptr)
 			{
 				s.pop();
 			}
 			s.top()->right = node;
 		}
 
-		if(!node->isLeaf)
+		if (!node->isLeaf)
 		{
 			s.push(node);
 		}
 		else
 		{
 			uint8_t key = 0;
-			for(int i = 0; i < 8; i++)
+			for (int i = 0; i < 8; i++)
 			{
 				if (binary_tree.front())
 				{
@@ -194,9 +194,9 @@ pair<uint8_t, bool> HuffmanTree::find_by_path(vector<bool> path)
 {
 	Node current = root;
 
-	for(bool direction : path)
+	for (bool direction : path)
 	{
-		if(!direction)
+		if (!direction)
 		{
 			current = *current.left;
 		}

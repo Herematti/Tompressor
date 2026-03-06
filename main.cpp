@@ -26,16 +26,17 @@ int main(int argc, char *argv[])
 
 	vector<uint8_t> bytes = open_file(file_path);
 
-	cout << "og file:\n";
-	for (uint8_t byte : bytes)
-	{
-		uint8_t mask = 1 << 7;
-		for (int i = 0; i < 8; i++)
-		{
-			cout << (bool)(byte & mask);
-			mask = mask >> 1;
-		}
-	}
+	cout << "original file length: ";
+	cout << 8 * bytes.size() << " bits\n";
+	// for (uint8_t byte : bytes)
+	// {
+	// 	uint8_t mask = 1 << 7;
+	// 	for (int i = 0; i < 8; i++)
+	// 	{
+	// 		cout << (bool)(byte & mask);
+	// 		mask = mask >> 1;
+	// 	}
+	// }
 
 	{ // holy scopes
 		map<uint8_t, int> mapped_bytes = map_bytes(bytes);
@@ -73,11 +74,12 @@ int main(int argc, char *argv[])
 
 	auto final_bin = final_binary(bytes, binary_tree, final_map);
 
-	cout << "\nnew file:\n";
-	for (bool bit : final_bin)
-	{
-		cout << bit;
-	}
+	cout << "compressed file length: ";
+	cout << final_bin.size() << " bits\n";
+	// for (bool bit : final_bin)
+	// {
+	// 	cout << bit;
+	// }
 
 	double compression = 100.0 * final_bin.size() / (bytes.size() * 8);
 	compression = floor(compression);
@@ -91,9 +93,9 @@ int main(int argc, char *argv[])
 	// cout << "\n";
 
 
-	cout << "\nprint\n";
-	huffman.print();
-	cout << "\n";
+	// cout << "\nprint\n";
+	// huffman.print();
+	// cout << "\n";
 	auto unc = uncompress(final_bin);
 
 	cout << "\n--uncompressed--\n";

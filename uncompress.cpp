@@ -33,7 +33,7 @@ vector<uint8_t> uncompress(vector<bool> compressed)
 
 	HuffmanTree tree(binary_tree);
 
-	tree.print();
+	// tree.print();
 
 	vector<bool> path = {};
 	for (int i = 16 + treeLength; i < compressed.size(); i++)
@@ -45,12 +45,12 @@ vector<uint8_t> uncompress(vector<bool> compressed)
 			continue;
 		}
 
-		cout << "\npath:";
-		for (auto dir : path)
-		{
-			cout << dir;
-		}
-		cout << " " << (char)check.first << "\n";
+		// cout << "\npath:";
+		// for (auto dir : path)
+		// {
+		// 	cout << dir;
+		// }
+		// cout << " " << (char)check.first << "\n";
 
 		uncompressed.push_back(check.first);
 		path = {};
