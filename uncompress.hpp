@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <cstdint>
 
 using namespace std;
 
-vector<bool> uncompress(vector<bool> compressed);
+vector<uint8_t> uncompress(vector<bool> compressed);

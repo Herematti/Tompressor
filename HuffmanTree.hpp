@@ -21,4 +21,5 @@ public:
 	void print();
 	vector<bool> binary_tree();
 	map<uint8_t, vector<bool>> map_tree();
+	pair<uint8_t, bool> find_by_path(vector<bool> path);
 };

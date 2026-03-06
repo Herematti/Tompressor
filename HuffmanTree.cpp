@@ -10,10 +10,10 @@ void HuffmanTree::print_helper(Node *node)
 	if (node == nullptr)
 		return;
 
-	cout << node->frequency;
+	cout << "/";
 	if (node->isLeaf)
 	{
-		cout << "/" << (char)node->key;
+		cout << (char)node->key;
 	}
 	cout << " ";
 
@@ -52,7 +52,7 @@ HuffmanTree::HuffmanTree(queue<bool> binary_tree)
 
 	while(!binary_tree.empty())
 	{
-		cout << "queue size: " << binary_tree.size() << "\n";
+		//cout << "queue size: " << binary_tree.size() << "\n";
 
 		Node* node = new Node();
 
@@ -101,7 +101,7 @@ HuffmanTree::HuffmanTree(queue<bool> binary_tree)
 
 void HuffmanTree::print()
 {
-	cout << root.frequency;
+	cout << '/';
 	cout << " ";
 	print_helper(root.left);
 	print_helper(root.right);
@@ -188,4 +188,23 @@ map<uint8_t, vector<bool>> HuffmanTree::map_tree()
 	map_tree_helper(root.right, map_final, {1});
 
 	return map_final;
+}
+
+pair<uint8_t, bool> HuffmanTree::find_by_path(vector<bool> path)
+{
+	Node current = root;
+
+	for(bool direction : path)
+	{
+		if(!direction)
+		{
+			current = *current.left;
+		}
+		else
+		{
+			current = *current.right;
+		}
+	}
+
+	return {current.key, current.isLeaf};
 }

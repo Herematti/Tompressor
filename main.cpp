@@ -49,12 +49,12 @@ int main(int argc, char *argv[])
 	HuffmanTree huffman(heapson);
 
 	vector<bool> binary_tree = huffman.binary_tree(); // ts just worked first try wtf?
-	cout << "\ntreeLength: " << binary_tree.size() << "\n";
-	for (auto bit : binary_tree)
-	{
-		cout << bit;
-	}
-	cout << "\nthis was the binary tree\n";
+	// cout << "\ntreeLength: " << binary_tree.size() << "\n";
+	// for (auto bit : binary_tree)
+	// {
+	// 	cout << bit;
+	// }
+	// cout << "\nthis was the binary tree\n";
 
 	auto final_map = huffman.map_tree();
 
@@ -84,11 +84,22 @@ int main(int argc, char *argv[])
 
 	cout << "\nfile compressed to ~" << compression << "% of original size\n";
 
-	for (auto bit : binary_tree)
-	{
-		cout << bit;
-	}
-	cout << "\n";
+	// for (auto bit : binary_tree)
+	// {
+	// 	cout << bit;
+	// }
+	// cout << "\n";
 
-	uncompress(final_bin);
+
+	cout << "\nprint\n";
+	huffman.print();
+	cout << "\n";
+	auto unc = uncompress(final_bin);
+
+	cout << "\n--uncompressed--\n";
+	for (auto u : unc)
+	{
+		cout << (char)u;
+	}
+	cout << "\n--uncompressed--\n";
 }
