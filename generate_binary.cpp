@@ -5,7 +5,7 @@ using namespace std;
 
 vector<bool> final_binary(vector<uint8_t> bytes, vector<bool> binary_tree, map<uint8_t, vector<bool>> mapped_bytes)
 {
-	vector<bool> final_binary = {0, 0, 0}; // first byte represent the empty space at the end of the shit -- bytes might not be fully filled in
+	vector<bool> final_binary;
 
 	int treeSize = binary_tree.size();
 
@@ -83,15 +83,6 @@ vector<bool> final_binary(vector<uint8_t> bytes, vector<bool> binary_tree, map<u
 		{
 			final_binary.push_back(bit);
 		}
-	}
-
-	int missing_bits = final_binary.size() % 8;
-	mask = 1 << 2;
-
-	for (int i = 0; i < 3; i++) // write the already mentioned empty space shit bits
-	{
-		final_binary[i] = (missing_bits & mask);
-		mask = mask >> 1;
 	}
 
 	return final_binary;
