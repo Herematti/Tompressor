@@ -10,6 +10,7 @@
 #include <cstdint>
 #include <stdexcept>
 #include <cmath>
+#include "write_file.hpp"
 
 using namespace std;
 
@@ -23,6 +24,11 @@ int main(int argc, char *argv[])
 	}
 
 	auto file_path = argv[1];
+
+	if (argc == 1)
+	{
+		throw runtime_error("no arguments given");
+	}
 
 	vector<uint8_t> bytes = open_file(file_path);
 
@@ -92,11 +98,26 @@ int main(int argc, char *argv[])
 	// }
 	// cout << "\n";
 
+	write_file(final_bin);
 
 	// cout << "\nprint\n";
 	// huffman.print();
 	// cout << "\n";
-	auto unc = uncompress(final_bin);
+	vector<uint8_t> bytes_to_unc = open_file("compressed.tom");
+	vector<bool> bits_to_unc;
+
+	for (auto byte : bytes_to_unc)
+	{
+		uint8_t mask = 1 << 7;
+
+		for (int i = 0; i < 8; i++)
+		{
+			bits_to_unc.push_back(byte & mask);
+			mask = mask >> 1;
+		}
+	}
+
+	auto unc = uncompress(bits_to_unc);
 
 	cout << "\n--uncompressed--\n";
 	for (auto u : unc)

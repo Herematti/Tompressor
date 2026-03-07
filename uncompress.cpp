@@ -7,19 +7,34 @@ vector<uint8_t> uncompress(vector<bool> compressed)
 {
 	vector<uint8_t> uncompressed;
 
+	int overflowing_bits = 0;
+	uint8_t mask = 1 << 2;
+	for(int i = 0; i < 3; i++)
+	{
+		if(compressed[i])
+		{
+			overflowing_bits += mask;
+		}
+		mask = mask >> 1;
+	}
+
+	for(int i = 0; i < overflowing_bits; i++)
+	{
+		compressed.pop_back();
+	}
+
 	int treeLength = 0;
-	for (int i = 0; i < 16; i++)
+	for (int i = 3; i < 19; i++)
 	{
 		if (compressed[i])
 		{
-			treeLength += 1 << (15 - i);
+			treeLength += 1 << (18 - i);
 		}
 	}
-	// cout << treeLength << "\n";
 
 	queue<bool> binary_tree;
 
-	for (int i = 16; i < 16 + treeLength; i++)
+	for (int i = 19; i < 19 + treeLength; i++)
 	{
 		binary_tree.push(compressed[i]);
 	}
@@ -36,7 +51,7 @@ vector<uint8_t> uncompress(vector<bool> compressed)
 	// tree.print();
 
 	vector<bool> path = {};
-	for (int i = 16 + treeLength; i < compressed.size(); i++)
+	for (int i = 19 + treeLength; i < compressed.size(); i++)
 	{
 		path.push_back(compressed[i]);
 		auto check = tree.find_by_path(path);

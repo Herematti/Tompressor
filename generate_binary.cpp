@@ -5,7 +5,7 @@ using namespace std;
 
 vector<bool> final_binary(vector<uint8_t> bytes, vector<bool> binary_tree, map<uint8_t, vector<bool>> mapped_bytes)
 {
-	vector<bool> final_binary;
+	vector<bool> final_binary = {false, false, false};
 
 	int treeSize = binary_tree.size();
 
@@ -85,6 +85,15 @@ vector<bool> final_binary(vector<uint8_t> bytes, vector<bool> binary_tree, map<u
 		}
 	}
 
+	int overflowing_bits = (8 - final_binary.size() % 8) % 8;
+
+	mask = 1 << 2;
+
+	for (int i = 0; i < 3; i++)
+	{
+		final_binary[i] = (overflowing_bits & mask);
+		mask = mask >> 1;
+	}
 	// for(auto map : mapped_bytes)
 	// {
 	// 	cout << map.first << ":";
