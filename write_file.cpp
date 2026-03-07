@@ -37,3 +37,13 @@ void write_file(vector<bool> bits, string path)
 		file.put(byte);
 	}
 }
+
+void write_file(vector<uint8_t> bytes, string path)
+{
+	ofstream file(path, ios::binary);
+
+	for (uint8_t byte : bytes)
+	{
+		file.put(byte);
+	}
+}
