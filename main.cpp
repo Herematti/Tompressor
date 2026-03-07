@@ -98,12 +98,12 @@ int main(int argc, char *argv[])
 	// }
 	// cout << "\n";
 
-	write_file(final_bin);
+	write_file(final_bin, "compression/compressed.tom");
 
 	// cout << "\nprint\n";
 	// huffman.print();
 	// cout << "\n";
-	vector<uint8_t> bytes_to_unc = open_file("compressed.tom");
+	vector<uint8_t> bytes_to_unc = open_file("compression/compressed.tom");
 	vector<bool> bits_to_unc;
 
 	for (auto byte : bytes_to_unc)
@@ -119,10 +119,12 @@ int main(int argc, char *argv[])
 
 	auto unc = uncompress(bits_to_unc);
 
-	cout << "\n--uncompressed--\n";
-	for (auto u : unc)
-	{
-		cout << (char)u;
-	}
-	cout << "\n--uncompressed--\n";
+	// cout << "\n--uncompressed--\n";
+	// for (auto u : unc)
+	// {
+	// 	cout << (char)u;
+	// }
+	// cout << "\n--uncompressed--\n";
+
+	write_file(unc, "compression/uncompressed.wav");
 }
