@@ -1,5 +1,6 @@
 #include "uncompress.hpp"
 #include "HuffmanTree.hpp"
+#include "secret.hpp"
 #include <queue>
 #include <cstdint>
 
@@ -70,6 +71,9 @@ vector<uint8_t> uncompress(vector<bool> compressed)
 		uncompressed.push_back(check.first);
 		path = {};
 	}
+
+	cout << "uncompression succesful bro\n";
+	super_secret_func();
 
 	return uncompressed;
 }
