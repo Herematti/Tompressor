@@ -1,8 +1,0 @@
-011000101101100001
-
-
-stack: root
-
-node1{isleaf:1, direction:0}
-
-root -> left = node1
