@@ -12,42 +12,75 @@
 #include <cmath>
 #include "write_file.hpp"
 #include <cstring>
+#include <filesystem>
 
 using namespace std;
+namespace fs = filesystem;
 
 int main(int argc, char *argv[])
 {
 	MinHeap heapson;
 
-	if (argc != 4)
+	if (argc < 2)
 	{
-		throw runtime_error("incorrect amount of arguments given");
+		throw runtime_error("No arguments given");
 	}
 
 	// bool ifCompression = (argv[1] == "-c");
 	bool ifCompression = (strcmp(argv[1], "-c") == 0);
-	//cout << "ifcompression: " << argv[1];
-	auto file_path = argv[2];
-	auto target_path = argv[3];
+
+	if (ifCompression && argc < 4)
+	{
+		throw runtime_error("Not enough arguments given");
+	}
+
+	// cout << "ifcompression: " << argv[1];
 
 	if (ifCompression)
 	{
-		vector<uint8_t> bytes = open_file(file_path);
+		auto target_path = argv[2];
+		vector<string> file_paths;
+
+		vector<string> file_names;
+
+		for (int i = 3; i < argc; i++)
+		{
+			file_paths.push_back(argv[i]);
+			file_names.push_back(fs::path(argv[i]).filename().string());
+		}
+
+		vector<vector<uint8_t>> binary_file_names;
+
+		for(string file_name : file_names)
+		{
+			vector<uint8_t> temp;
+			for(auto charr : file_name)
+			{
+				temp.push_back((uint8_t)charr);
+			}
+			binary_file_names.push_back(temp);
+		}
+
+		vector<vector<uint8_t>> bytes;
+
+		// vector<uint8_t> bytes = open_file(file_path);
+		for (string file_path : file_paths)
+		{
+			bytes.push_back(open_file(file_path));
+		}
+
+		unsigned long long og_file_len = 0;
+		for (auto file_bytes : bytes)
+		{
+			og_file_len += 8 * file_bytes.size();
+		}
 
 		cout << "original file length:   ";
-		cout << 8 * bytes.size() << " bits\n";
-		// for (uint8_t byte : bytes)
-		// {
-		// 	uint8_t mask = 1 << 7;
-		// 	for (int i = 0; i < 8; i++)
-		// 	{
-		// 		cout << (bool)(byte & mask);
-		// 		mask = mask >> 1;
-		// 	}
-		// }
+		cout << og_file_len << " bits\n";
 
 		{ // holy scopes
 			map<uint8_t, int> mapped_bytes = map_bytes(bytes);
+			add_map_bytes(binary_file_names, mapped_bytes);
 
 			for (auto byte : mapped_bytes)
 			{
@@ -57,53 +90,26 @@ int main(int argc, char *argv[])
 
 		HuffmanTree huffman(heapson);
 
-		vector<bool> binary_tree = huffman.binary_tree(); // ts just worked first try wtf?
-		// cout << "\ntreeLength: " << binary_tree.size() << "\n";
-		// for (auto bit : binary_tree)
-		// {
-		// 	cout << bit;
-		// }
-		// cout << "\nthis was the binary tree\n";
+		vector<bool> binary_tree = huffman.binary_tree();
 
 		auto final_map = huffman.map_tree();
 
-		// for (auto map : mapa)
-		// {
-		// 	cout << map.first << "/";
-		// 	for (auto bit : map.second)
-		// 	{
-		// 		cout << bit;
-		// 	}
-		// 	cout << " ";
-		// }
-		// cout << "\n";
+		auto final_bin = final_binary(bytes, binary_tree, final_map, binary_file_names);
 
-		// huffman.print();
+		// cout << "compressed file length: ";
+		// cout << final_bin.size() << " bits\n";
 
-		auto final_bin = final_binary(bytes, binary_tree, final_map);
+		// double compression = 100.0 * final_bin.size() / (bytes.size() * 8);
+		// compression = floor(compression);
 
-		cout << "compressed file length: ";
-		cout << final_bin.size() << " bits\n";
-		// for (bool bit : final_bin)
-		// {
-		// 	cout << bit;
-		// }
+		// cout << "\nfile compressed to ~" << compression << "% of original size\n";
 
-		double compression = 100.0 * final_bin.size() / (bytes.size() * 8);
-		compression = floor(compression);
-
-		cout << "\nfile compressed to ~" << compression << "% of original size\n";
-
-		// for (auto bit : binary_tree)
-		// {
-		// 	cout << bit;
-		// }
-		// cout << "\n";
-
-		write_file(final_bin, target_path);
+		// write_file(final_bin, target_path);
 	}
 	else
 	{
+		auto file_path = argv[2];
+		auto target_path = argv[3];
 		// huffman.print();
 		// cout << "\n";
 		vector<uint8_t> bytes_to_unc = open_file(file_path);
