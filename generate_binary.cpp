@@ -121,7 +121,7 @@ vector<bool> final_binary(vector<vector<uint8_t>> bytes, vector<bool> binary_tre
 			}
 		}
 
-		int file_size = bytes[i].size();
+		int file_size = file_coded.size();
 		mask = 1 << 15;
 		cout << "CONTENT SIZE: ";
 		for (int i = 0; i < 16; i++) // next 2 bytes used to determine the size of file

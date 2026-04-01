@@ -2,6 +2,7 @@
 
 void write_file(vector<bool> bits, string path)
 {
+	path += ".tom";
 	ofstream file(path, ios::binary);
 
 	uint8_t byte = 0;
@@ -45,5 +46,20 @@ void write_file(vector<uint8_t> bytes, string path)
 	for (uint8_t byte : bytes)
 	{
 		file.put(byte);
+	}
+}
+
+void write_files(pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> para, string directory)
+{
+
+	for (int i = 0; i < para.first.size(); i++)
+	{
+		string file_name = "";
+		for (auto c : para.first[i])
+		{
+			file_name += char(c);
+		}
+
+		write_file(para.second[i], directory + "/" + file_name);
 	}
 }

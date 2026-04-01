@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 
 		vector<string> file_names;
 
-		for (int i = 2; i < argc; i++)
+		for (int i = 3; i < argc; i++)
 		{
 			file_paths.push_back(argv[i]);
 			file_names.push_back(fs::path(argv[i]).filename().string());
@@ -107,15 +107,15 @@ int main(int argc, char *argv[])
 
 		auto final_bin = final_binary(bytes, binary_tree, final_map, binary_file_names);
 
-		// cout << "compressed file length: ";
-		// cout << final_bin.size() << " bits\n";
+		cout << "compressed file length: ";
+		cout << final_bin.size() << " bits\n";
 
-		// double compression = 100.0 * final_bin.size() / (bytes.size() * 8);
-		// compression = floor(compression);
+		double compression = 100.0 * final_bin.size() / (bytes.size() * 8);
+		compression = floor(compression);
 
-		// cout << "\nfile compressed to ~" << compression << "% of original size\n";
+		cout << "\nfile compressed to ~" << compression << "% of original size\n";
 
-		// write_file(final_bin, target_path);
+		write_file(final_bin, target_path);
 	}
 	else
 	{
@@ -146,6 +146,6 @@ int main(int argc, char *argv[])
 		// }
 		// cout << "\n--uncompressed--\n";
 
-		write_file(unc, target_path);
+		write_files(unc, target_path);
 	}
 }
