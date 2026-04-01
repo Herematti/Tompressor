@@ -12,15 +12,12 @@ vector<bool> final_binary(vector<vector<uint8_t>> bytes, vector<bool> binary_tre
 	// cout << "tree length:\n";
 	int treeSize = binary_tree.size();
 	uint16_t mask = 1 << 15;
-	cout << "TREE SIZE: ";
 	for (int i = 0; i < 16; i++) // next 2 bytes used to determine the size of tree
 	{
 		// cout << (bool)(treeSize & mask);
 		final_binary.push_back(treeSize & mask);
-		cout << (bool)(treeSize & mask);
 		mask = mask >> 1;
 	}
-	cout << "\n";
 
 	// cout << "\nonly tree:\n";
 	// for (auto bit : binary_tree)
@@ -30,13 +27,10 @@ vector<bool> final_binary(vector<vector<uint8_t>> bytes, vector<bool> binary_tre
 	// cout << "\n";
 
 
-	cout << "TREE: ";
 	for (bool bit : binary_tree) // next we put in the tree itself --duh--
 	{
 		final_binary.push_back(bit);
-		cout << bit;
 	}
-	cout << "\n";
 
 	/* moja szczera reakcja na ta informacje
 	⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠛⠛⠛⠉⠉⠉⠋⠛⠛⠛⠻⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
@@ -91,24 +85,18 @@ vector<bool> final_binary(vector<vector<uint8_t>> bytes, vector<bool> binary_tre
 		}
 
 		int filename_size = filename_coded.size();
-		uint16_t mask = 1 << 7;
-		cout << "NAME SIZE: ";
+		uint32_t mask = 1 << 7;
 		for (int i = 0; i < 8; i++) // next byte used to determine the size of filename
 		{
 			// cout << (bool)(treeSize & mask);
 			final_binary.push_back(filename_size & mask);
-			cout << (bool)(filename_size & mask);
 			mask = mask >> 1;
 		}
-		cout << "\n";
 
-		cout << "FILE NAME: ";
 		for (bool bit : filename_coded)
 		{
 			final_binary.push_back(bit);
-			cout << bit;
 		}
-		cout << "\n";
 
 
 		vector<bool> file_coded;
@@ -122,24 +110,18 @@ vector<bool> final_binary(vector<vector<uint8_t>> bytes, vector<bool> binary_tre
 		}
 
 		int file_size = file_coded.size();
-		mask = 1 << 15;
-		cout << "CONTENT SIZE: ";
-		for (int i = 0; i < 16; i++) // next 2 bytes used to determine the size of file
+		mask = 1 << 31;
+		for (int i = 0; i < 32; i++) // next 4 bytes used to determine the size of file
 		{
 			// cout << (bool)(treeSize & mask);
 			final_binary.push_back(file_size & mask);
-			cout << (file_size & mask);
 			mask = mask >> 1;
 		}
-		cout << "\n";
 
-		cout << "CONTENT: ";
 		for (bool bit : file_coded)
 		{
 			final_binary.push_back(bit);
-			cout << bit;
 		}
-		cout << "\n";
 	}
 
 	int overflowing_bits = (8 - final_binary.size() % 8) % 8;
@@ -150,12 +132,6 @@ vector<bool> final_binary(vector<vector<uint8_t>> bytes, vector<bool> binary_tre
 	{
 		final_binary[i] = (overflowing_bits & mask);
 		mask = mask >> 1;
-	}
-
-	cout << "FINAL BINARY: ";
-	for (bool bit : final_binary)
-	{
-		cout << bit;
 	}
 
 	return final_binary;

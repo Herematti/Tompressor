@@ -63,18 +63,12 @@ int main(int argc, char *argv[])
 
 		vector<vector<uint8_t>> bytes;
 
-		cout << "bytes";
 		for (string file_path : file_paths)
 		{
 			vector<uint8_t> temp = open_file(file_path);
 
-			for (auto byte : temp)
-				cout << char(byte);
-			cout << "\n";
-
 			bytes.push_back(temp);
 		}
-		cout << "\n";
 
 		unsigned long long og_file_len = 0;
 		for (auto file_bytes : bytes)
@@ -97,10 +91,6 @@ int main(int argc, char *argv[])
 
 		HuffmanTree huffman(heapson);
 
-		cout << "TREE: ";
-		huffman.print();
-		cout << "\n";
-
 		vector<bool> binary_tree = huffman.binary_tree();
 
 		auto final_map = huffman.map_tree();
@@ -110,7 +100,7 @@ int main(int argc, char *argv[])
 		cout << "compressed file length: ";
 		cout << final_bin.size() << " bits\n";
 
-		double compression = 100.0 * final_bin.size() / (bytes.size() * 8);
+		double compression = 100.0 * final_bin.size() / og_file_len;
 		compression = floor(compression);
 
 		cout << "\nfile compressed to ~" << compression << "% of original size\n";

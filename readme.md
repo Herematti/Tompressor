@@ -1,13 +1,7 @@
 Tompressor is a simple compression program using the Huffman tree algorithm
 
-## Building
+## Compilation
 
-**Linux / macOS:**
-```
-g++ $(ls *.cpp | grep -v secret.cpp) -o tompressor -O3
-```
-
-**Windows:**
 ```
 g++ *.cpp -o tompressor -O3
 ```
