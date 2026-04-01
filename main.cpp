@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 	// bool ifCompression = (argv[1] == "-c");
 	bool ifCompression = (strcmp(argv[1], "-c") == 0);
 
-	if (ifCompression && argc < 4)
+	if (ifCompression && argc < 3)
 	{
 		throw runtime_error("Not enough arguments given");
 	}
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 
 		vector<string> file_names;
 
-		for (int i = 3; i < argc; i++)
+		for (int i = 2; i < argc; i++)
 		{
 			file_paths.push_back(argv[i]);
 			file_names.push_back(fs::path(argv[i]).filename().string());
@@ -51,10 +51,10 @@ int main(int argc, char *argv[])
 
 		vector<vector<uint8_t>> binary_file_names;
 
-		for(string file_name : file_names)
+		for (string file_name : file_names)
 		{
 			vector<uint8_t> temp;
-			for(auto charr : file_name)
+			for (auto charr : file_name)
 			{
 				temp.push_back((uint8_t)charr);
 			}
@@ -63,11 +63,18 @@ int main(int argc, char *argv[])
 
 		vector<vector<uint8_t>> bytes;
 
-		// vector<uint8_t> bytes = open_file(file_path);
+		cout << "bytes";
 		for (string file_path : file_paths)
 		{
-			bytes.push_back(open_file(file_path));
+			vector<uint8_t> temp = open_file(file_path);
+
+			for (auto byte : temp)
+				cout << char(byte);
+			cout << "\n";
+
+			bytes.push_back(temp);
 		}
+		cout << "\n";
 
 		unsigned long long og_file_len = 0;
 		for (auto file_bytes : bytes)
@@ -89,6 +96,10 @@ int main(int argc, char *argv[])
 		}
 
 		HuffmanTree huffman(heapson);
+
+		cout << "TREE: ";
+		huffman.print();
+		cout << "\n";
 
 		vector<bool> binary_tree = huffman.binary_tree();
 
