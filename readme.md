@@ -1,15 +1,27 @@
-Tompressor is a simple compression program made using the huffman tree algorythm.
+Tompressor is a simple compression program using the Huffman tree algorithm
 
-To first start the file, use
-```
-    g++ *.cpp -o tompressor -O3
-```
-to compile the project.
+## Building
 
-
-After that to use the compression there are only two commands:
-
+**Linux / macOS:**
 ```
-    .\tompressor -c path-to-uncompressed-file path-to-compressed-file
-    .\tompressor -x path-to-compressed-file path-to-uncompressed-file
+g++ $(ls *.cpp | grep -v secret.cpp) -o tompressor -O3
 ```
+
+**Windows:**
+```
+g++ *.cpp -o tompressor -O3
+```
+
+## Usage
+
+**Compress** files into a single `.tom` archive:
+```
+.\tompressor -c outputPath file1 file2 file3 ...
+```
+The `.tom` extension is added automatically, so `output` becomes `output.tom`
+
+**Decompress** an archive into a directory:
+```
+.\tompressor -x archive.tom directory
+```
+The output directory must already exist
