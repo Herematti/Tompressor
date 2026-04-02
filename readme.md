@@ -10,7 +10,7 @@ g++ *.cpp -o tompressor -O3
 
 **Compress** files into a single `.tom` archive:
 ```
-.\tompressor -c outputPath file1 file2 file3 ...
+.\tompressor -c output file1 file2 file3 ...
 ```
 The `.tom` extension is added automatically, so `output` becomes `output.tom`
 

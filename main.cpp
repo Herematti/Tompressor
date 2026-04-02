@@ -26,6 +26,21 @@ int main(int argc, char *argv[])
 		throw runtime_error("No arguments given");
 	}
 
+	if (strcmp(argv[1], "-h") == 0)
+	{
+		cout << "Tompressor - Huffman tree compression tool\n\n";
+		cout << "Usage:\n";
+		cout << "  -h                                   Show help message\n";
+		cout << "  -c <output> <file1> <file2> ...      Compress files into a .tom archive\n";
+		cout << "  -x <archive.tom> <directory>         Decompress archive into a directory\n\n";
+		cout << "Notes:\n";
+		cout << "  The .tom extension is added automatically (output becomes output.tom)\n";
+		cout << "  The output directory for -x must already exist\n\n";
+		cout << "Examples:\n";
+		cout << "  .\\tompressor -c archive file1.txt file2.txt\n";
+		cout << "  .\\tompressor -x archive.tom ./dir\n";
+	}
+
 	// bool ifCompression = (argv[1] == "-c");
 	bool ifCompression = (strcmp(argv[1], "-c") == 0);
 
