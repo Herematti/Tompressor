@@ -39,6 +39,7 @@ int main(int argc, char *argv[])
 		cout << "Examples:\n";
 		cout << "  .\\tompressor -c archive file1.txt file2.txt\n";
 		cout << "  .\\tompressor -x archive.tom ./dir\n";
+		return 0;
 	}
 
 	// bool ifCompression = (argv[1] == "-c");
