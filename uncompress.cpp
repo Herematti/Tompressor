@@ -165,7 +165,7 @@ pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> uncompress(vector<bool> c
 		uncompressed = {};
 	}
 
-	cout << "uncompression succesful bro\n";
+	cout << "uncompression succesful\n";
 	super_secret_func();
 
 	// cout << "filenames: ";

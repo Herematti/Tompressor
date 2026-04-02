@@ -19,139 +19,155 @@ namespace fs = filesystem;
 
 int main(int argc, char *argv[])
 {
-	MinHeap heapson;
-
-	if (argc < 2)
+	try
 	{
-		throw runtime_error("No arguments given");
-	}
+		MinHeap heapson;
 
-	if (strcmp(argv[1], "-h") == 0)
-	{
-		cout << "Tompressor - Huffman tree compression tool\n\n";
-		cout << "Usage:\n";
-		cout << "  -h                                   Show help message\n";
-		cout << "  -c <output> <file1> <file2> ...      Compress files into a .tom archive\n";
-		cout << "  -x <archive.tom> <directory>         Decompress archive into a directory\n\n";
-		cout << "Notes:\n";
-		cout << "  The .tom extension is added automatically (output becomes output.tom)\n";
-		cout << "  The output directory for -x must already exist\n\n";
-		cout << "Examples:\n";
-		cout << "  .\\tompressor -c archive file1.txt file2.txt\n";
-		cout << "  .\\tompressor -x archive.tom ./dir\n";
-		return 0;
-	}
-
-	// bool ifCompression = (argv[1] == "-c");
-	bool ifCompression = (strcmp(argv[1], "-c") == 0);
-
-	if (ifCompression && argc < 3)
-	{
-		throw runtime_error("Not enough arguments given");
-	}
-
-	// cout << "ifcompression: " << argv[1];
-
-	if (ifCompression)
-	{
-		auto target_path = argv[2];
-		vector<string> file_paths;
-
-		vector<string> file_names;
-
-		for (int i = 3; i < argc; i++)
+		if (strcmp(argv[1], "-c") && strcmp(argv[1], "-x") && strcmp(argv[1], "-h"))
 		{
-			file_paths.push_back(argv[i]);
-			file_names.push_back(fs::path(argv[i]).filename().string());
+			throw runtime_error("Unknown argument");
 		}
 
-		vector<vector<uint8_t>> binary_file_names;
-
-		for (string file_name : file_names)
+		if (strcmp(argv[1], "-h") == 0)
 		{
-			vector<uint8_t> temp;
-			for (auto charr : file_name)
+			cout << "Tompressor - Huffman tree compression tool\n\n";
+			cout << "Usage:\n";
+			cout << "  -h                                   Show help message\n";
+			cout << "  -c <output> <file1> <file2> ...      Compress files into a .tom archive\n";
+			cout << "  -x <archive.tom> <directory>         Decompress archive into a directory\n\n";
+			cout << "Notes:\n";
+			cout << "  The .tom extension is added automatically (output becomes output.tom)\n";
+			cout << "  The output directory for -x must already exist\n\n";
+			cout << "Examples:\n";
+			cout << "  .\\tompressor -c archive file1.txt file2.txt\n";
+			cout << "  .\\tompressor -x archive.tom ./dir\n";
+			return 0;
+		}
+
+		// bool ifCompression = (argv[1] == "-c");
+
+		// cout << "ifcompression: " << argv[1];
+
+		if (strcmp(argv[1], "-c") == 0)
+		{
+			if (argc < 4)
 			{
-				temp.push_back((uint8_t)charr);
+				throw runtime_error("Not enough arguments given");
 			}
-			binary_file_names.push_back(temp);
-		}
 
-		vector<vector<uint8_t>> bytes;
+			auto target_path = argv[2];
+			vector<string> file_paths;
 
-		for (string file_path : file_paths)
-		{
-			vector<uint8_t> temp = open_file(file_path);
+			vector<string> file_names;
 
-			bytes.push_back(temp);
-		}
-
-		unsigned long long og_file_len = 0;
-		for (auto file_bytes : bytes)
-		{
-			og_file_len += 8 * file_bytes.size();
-		}
-
-		cout << "original file length:   ";
-		cout << og_file_len << " bits\n";
-
-		{ // holy scopes
-			map<uint8_t, int> mapped_bytes = map_bytes(bytes);
-			add_map_bytes(binary_file_names, mapped_bytes);
-
-			for (auto byte : mapped_bytes)
+			for (int i = 3; i < argc; i++)
 			{
-				heapson.addNode(byte.second, byte.first);
+				file_paths.push_back(argv[i]);
+				file_names.push_back(fs::path(argv[i]).filename().string());
 			}
+
+			vector<vector<uint8_t>> binary_file_names;
+
+			for (string file_name : file_names)
+			{
+				vector<uint8_t> temp;
+				for (auto charr : file_name)
+				{
+					temp.push_back((uint8_t)charr);
+				}
+				binary_file_names.push_back(temp);
+			}
+
+			vector<vector<uint8_t>> bytes;
+
+			for (string file_path : file_paths)
+			{
+				vector<uint8_t> temp = open_file(file_path);
+
+				bytes.push_back(temp);
+			}
+
+			unsigned long long og_file_len = 0;
+			for (auto file_bytes : bytes)
+			{
+				og_file_len += 8 * file_bytes.size();
+			}
+
+			cout << "original file length:   ";
+			cout << og_file_len << " bits\n";
+
+			{ // holy scopes
+				map<uint8_t, int> mapped_bytes = map_bytes(bytes);
+				add_map_bytes(binary_file_names, mapped_bytes);
+
+				for (auto byte : mapped_bytes)
+				{
+					heapson.addNode(byte.second, byte.first);
+				}
+			}
+
+			HuffmanTree huffman(heapson);
+
+			vector<bool> binary_tree = huffman.binary_tree();
+
+			auto final_map = huffman.map_tree();
+
+			auto final_bin = final_binary(bytes, binary_tree, final_map, binary_file_names);
+
+			cout << "compressed file length: ";
+			cout << final_bin.size() << " bits\n";
+
+			double compression = 100.0 * final_bin.size() / og_file_len;
+			compression = floor(compression);
+
+			cout << "\nfile compressed to ~" << compression << "% of original size\n";
+
+			write_file(final_bin, target_path);
 		}
+		else if (strcmp(argv[1], "-x") == 0)
+		{
+			if (argc < 4)
+			{
+				throw runtime_error("Not enough arguments given");
+			}
 
-		HuffmanTree huffman(heapson);
+			auto file_path = argv[2];
+			auto target_path = argv[3];
+			// huffman.print();
+			// cout << "\n";
+			vector<uint8_t> bytes_to_unc = open_file(file_path);
+			vector<bool> bits_to_unc;
 
-		vector<bool> binary_tree = huffman.binary_tree();
+			for (auto byte : bytes_to_unc)
+			{
+				uint8_t mask = 1 << 7;
 
-		auto final_map = huffman.map_tree();
+				for (int i = 0; i < 8; i++)
+				{
+					bits_to_unc.push_back(byte & mask);
+					mask = mask >> 1;
+				}
+			}
 
-		auto final_bin = final_binary(bytes, binary_tree, final_map, binary_file_names);
+			auto unc = uncompress(bits_to_unc);
 
-		cout << "compressed file length: ";
-		cout << final_bin.size() << " bits\n";
+			// cout << "\n--uncompressed--\n";
+			// for (auto u : unc)
+			// {
+			// 	cout << (char)u;
+			// }
+			// cout << "\n--uncompressed--\n";
 
-		double compression = 100.0 * final_bin.size() / og_file_len;
-		compression = floor(compression);
-
-		cout << "\nfile compressed to ~" << compression << "% of original size\n";
-
-		write_file(final_bin, target_path);
+			write_files(unc, target_path);
+		}
 	}
-	else
+	catch (runtime_error err)
 	{
-		auto file_path = argv[2];
-		auto target_path = argv[3];
-		// huffman.print();
-		// cout << "\n";
-		vector<uint8_t> bytes_to_unc = open_file(file_path);
-		vector<bool> bits_to_unc;
-
-		for (auto byte : bytes_to_unc)
-		{
-			uint8_t mask = 1 << 7;
-
-			for (int i = 0; i < 8; i++)
-			{
-				bits_to_unc.push_back(byte & mask);
-				mask = mask >> 1;
-			}
-		}
-
-		auto unc = uncompress(bits_to_unc);
-
-		// cout << "\n--uncompressed--\n";
-		// for (auto u : unc)
-		// {
-		// 	cout << (char)u;
-		// }
-		// cout << "\n--uncompressed--\n";
-
-		write_files(unc, target_path);
+		cerr << err.what() << "\n";
+		cerr << "Consult -h if you have trouble with usage \n";
+	}
+	catch (exception err)
+	{
+		cerr << "UNEXPECTED: (run, the PC is likely to blow up!!!) " << err.what() << "\n";
 	}
 }
