@@ -4,4 +4,4 @@
 
 using namespace std;
 
-vector<uint8_t> uncompress(vector<bool> compressed);
+pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> uncompress(vector<bool> compressed);

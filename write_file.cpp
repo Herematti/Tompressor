@@ -1,7 +1,8 @@
 #include "write_file.hpp"
 
-void write_file(vector<bool> bits, string path)
+void write_file(const vector<bool>& bits, string path)
 {
+	path += ".tom";
 	ofstream file(path, ios::binary);
 
 	uint8_t byte = 0;
@@ -10,8 +11,8 @@ void write_file(vector<bool> bits, string path)
 	for (bool bit : bits)
 	{
 		mask = 1 << (7 - bitCount);
-		
-		if(bit)
+
+		if (bit)
 		{
 			byte += mask;
 		}
@@ -38,12 +39,23 @@ void write_file(vector<bool> bits, string path)
 	}
 }
 
-void write_file(vector<uint8_t> bytes, string path)
+void write_file(const vector<uint8_t> &bytes, const string &path)
 {
 	ofstream file(path, ios::binary);
+	file.write(reinterpret_cast<const char *>(bytes.data()), bytes.size()); // evil fucking reinterpretation magic spell cast
+}
 
-	for (uint8_t byte : bytes)
+void write_files(const pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> &names_and_contents, const string &directory)
+{
+
+	for (int i = 0; i < names_and_contents.first.size(); i++)
 	{
-		file.put(byte);
+		string file_name = "";
+		for (auto c : names_and_contents.first[i])
+		{
+			file_name += char(c);
+		}
+
+		write_file(names_and_contents.second[i], directory + "/" + file_name);
 	}
 }

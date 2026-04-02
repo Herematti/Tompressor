@@ -5,8 +5,12 @@
 
 using namespace std;
 
+
+#ifdef _WIN32
+
 void super_secret_func()
 {
+
 	_setmode(_fileno(stdout), 0x00020000);
 	vector<wstring> secretvar;
 	secretvar.push_back(L"⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠛⠛⠛⠉⠉⠉⠋⠛⠛⠛⠻⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿");
@@ -45,8 +49,18 @@ void super_secret_func()
 	secretvar.push_back(L"⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⣱⡐⡕⡕⡽⣝⣟⣮⣾⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿");
 	secretvar.push_back(L"⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣵⣽⣸⣃⣧⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿");
 
+
 	for (auto s : secretvar)
 	{
 		wcout << s << "\n";
 	}
 }
+
+#else
+
+void super_secret_func()
+{
+	cout << "Super secret function unsupported on Linux/Mac\n";
+}
+
+#endif
