@@ -1,12 +1,13 @@
 #include "secret.hpp"
 #include <vector>
-#include <io.h>
 #include <fcntl.h>
 
 using namespace std;
 
 
 #ifdef _WIN32
+
+#include <io.h>
 
 void super_secret_func()
 {
