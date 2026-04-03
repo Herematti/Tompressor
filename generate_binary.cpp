@@ -1,4 +1,5 @@
 #include "generate_binary.hpp"
+#include "progressbar.hpp"
 #include <iostream>
 
 using namespace std;
@@ -6,8 +7,6 @@ using namespace std;
 vector<bool> final_binary(vector<vector<uint8_t>> bytes, vector<bool> binary_tree, map<uint8_t, vector<bool>> mapped_bytes, vector<vector<uint8_t>> binary_file_names)
 {
 	vector<bool> final_binary = {false, false, false};
-
-	
 	
 	// cout << "tree length:\n";
 	int treeSize = binary_tree.size();
@@ -71,9 +70,9 @@ vector<bool> final_binary(vector<vector<uint8_t>> bytes, vector<bool> binary_tre
 	*/
 
 	//ale śmietnik nienawidze tego kodu
-
 	for (int i = 0; i < bytes.size(); i++)
 	{
+
 		vector<bool> filename_coded;
 		for (uint8_t byte : binary_file_names[i])
 		{

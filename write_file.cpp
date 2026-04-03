@@ -1,4 +1,5 @@
 #include "write_file.hpp"
+#include "progressbar.hpp"
 
 void write_file(const vector<bool>& bits, string path)
 {
@@ -47,9 +48,10 @@ void write_file(const vector<uint8_t> &bytes, const string &path)
 
 void write_files(const pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> &names_and_contents, const string &directory)
 {
-
+	generate_progressbar("WRITING FILES");
 	for (int i = 0; i < names_and_contents.first.size(); i++)
 	{
+		update_progressbar(i, names_and_contents.first.size());
 		string file_name = "";
 		for (auto c : names_and_contents.first[i])
 		{
@@ -58,4 +60,7 @@ void write_files(const pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> &n
 
 		write_file(names_and_contents.second[i], directory + "/" + file_name);
 	}
+	force_finish_progressbar();
+
+	cout << "\ntask finished\n";
 }

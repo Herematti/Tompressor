@@ -3,6 +3,7 @@
 #include "secret.hpp"
 #include <queue>
 #include <cstdint>
+#include "progressbar.hpp"
 
 const int OVERFLOW_LENGTH = 3;
 const int TREESIZE_LENGTH = 16;
@@ -18,6 +19,8 @@ pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> uncompress(vector<bool> c
 
 	vector<vector<uint8_t>> uncompressedFileNames;
 	vector<vector<uint8_t>> uncompressedContents;
+
+	generate_progressbar("UNCOMPRESSING");
 
 	int overflowing_bits = 0;
 	uint8_t mask = 1 << 2;
@@ -70,6 +73,7 @@ pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> uncompress(vector<bool> c
 	int i = OVERFLOW_LENGTH + TREESIZE_LENGTH + treeLength;
 	while (i < compressed.size())
 	{
+		update_progressbar(i, compressed.size());
 		// cout << "START: ";
 		// for (int j = i; j < compressed.size(); j++)
 		// {
@@ -81,6 +85,7 @@ pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> uncompress(vector<bool> c
 		int fileNameLength = 0;
 		for (int j = 0; j < NAME_SIZE_LENGTH; j++)
 		{
+			update_progressbar(i + j, compressed.size());
 			if (compressed[i + j])
 			{
 				fileNameLength += 1 << (NAME_SIZE_LENGTH - 1 - j);
@@ -101,6 +106,7 @@ pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> uncompress(vector<bool> c
 
 		for (int j = 0; j < fileNameLength; j++)
 		{
+			update_progressbar(i + j, compressed.size());
 			path.push_back(compressed[i + j]);
 			auto check = tree.find_by_path(path);
 			if (!check.second)
@@ -125,6 +131,7 @@ pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> uncompress(vector<bool> c
 		int contentLength = 0;
 		for (int j = 0; j < CONTENT_SIZE_LENGTH; j++)
 		{
+			update_progressbar(i + j, compressed.size());
 			if (compressed[i + j])
 			{
 				contentLength += 1 << (CONTENT_SIZE_LENGTH - 1 - j);
@@ -142,6 +149,7 @@ pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> uncompress(vector<bool> c
 
 		for (int j = 0; j < contentLength; j++)
 		{
+			update_progressbar(i + j, compressed.size());
 			path.push_back(compressed[i + j]);
 			auto check = tree.find_by_path(path);
 			if (!check.second)
@@ -165,8 +173,9 @@ pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> uncompress(vector<bool> c
 		uncompressed = {};
 	}
 
-	cout << "uncompression succesful\n";
-	super_secret_func();
+	force_finish_progressbar();
+	cout << "\nuncompression succesful\n\n";
+	//super_secret_func();
 
 	// cout << "filenames: ";
 	// for (auto uncompressedFilename : uncompressedFileNames)
