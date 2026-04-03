@@ -13,6 +13,7 @@
 #include "write_file.hpp"
 #include <cstring>
 #include <filesystem>
+#include "secret.hpp"
 
 using namespace std;
 namespace fs = filesystem;
@@ -23,9 +24,19 @@ int main(int argc, char *argv[])
 	{
 		MinHeap heapson;
 
-		if (strcmp(argv[1], "-c") && strcmp(argv[1], "-x") && strcmp(argv[1], "-h"))
+		if(argc < 2)
+		{
+			throw runtime_error("No arguments given");
+		}
+
+		if (strcmp(argv[1], "-c") && strcmp(argv[1], "-x") && strcmp(argv[1], "-h") && strcmp(argv[1], "-o"))
 		{
 			throw runtime_error("Unknown argument");
+		}
+
+		if (strcmp(argv[1], "-o") == 0)
+		{
+			super_secret_func();
 		}
 
 		if (strcmp(argv[1], "-h") == 0)
@@ -34,7 +45,8 @@ int main(int argc, char *argv[])
 			cout << "Usage:\n";
 			cout << "  -h                                   Show help message\n";
 			cout << "  -c <output> <file1> <file2> ...      Compress files into a .tom archive\n";
-			cout << "  -x <archive.tom> <directory>         Decompress archive into a directory\n\n";
+			cout << "  -x <archive.tom> <directory>         Decompress archive into a directory\n";
+			cout << "  -o                                   Have a bit of fun :D\n\n";
 			cout << "Notes:\n";
 			cout << "  The .tom extension is added automatically (output becomes output.tom)\n";
 			cout << "  The output directory for -x must already exist\n\n";
@@ -48,7 +60,7 @@ int main(int argc, char *argv[])
 
 		// cout << "ifcompression: " << argv[1];
 
-		if (strcmp(argv[1], "-c") == 0)
+		if (strcmp(argv[1], "-c") == 0)	
 		{
 			if (argc < 4)
 			{

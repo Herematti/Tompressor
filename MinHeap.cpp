@@ -101,7 +101,7 @@ size_t MinHeap::size()
 Node MinHeap::pop()
 {
 	if (size() == 0)
-		throw new runtime_error("tried to pop empty heap");
+		throw runtime_error("tried to pop empty heap");
 
 	int last = storage.size() - 1;
 	auto res = storage[1];
