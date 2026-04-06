@@ -84,7 +84,14 @@ vector<bool> final_binary(vector<vector<uint8_t>> bytes, vector<bool> binary_tre
 		}
 
 		int filename_size = filename_coded.size();
-		uint32_t mask = 1 << 7;
+
+		if (filename_size > (1ULL << 8) - 1)
+		{
+			string file_name(binary_file_names[i].begin(), binary_file_names[i].end());
+			throw runtime_error("Compressed file name: \"" + file_name + "\" exeeds the limit of 2^8 bits");
+		}
+
+		uint64_t mask = 1 << 7;
 		for (int i = 0; i < 8; i++) // next byte used to determine the size of filename
 		{
 			// cout << (bool)(treeSize & mask);
@@ -108,14 +115,21 @@ vector<bool> final_binary(vector<vector<uint8_t>> bytes, vector<bool> binary_tre
 			}
 		}
 
-		int file_size = file_coded.size();
-		mask = 1 << 31;
-		for (int i = 0; i < 32; i++) // next 4 bytes used to determine the size of file
+		long long file_size = file_coded.size();
+
+		if (file_size > (1ULL << 40) - 1)
+		{
+			string file_name(binary_file_names[i].begin(), binary_file_names[i].end());
+			throw runtime_error("Compressed file content: \"" + file_name + "\" exeeds the limit of 2^32 bits");
+		}
+
+		mask = 1ULL << 39;
+		for (int i = 0; i < 40; i++) // next 40 bits used to determine the size of file
 		{
 			// cout << (bool)(treeSize & mask);
 			final_binary.push_back(file_size & mask);
 			mask = mask >> 1;
-		}
+		}	
 
 		for (bool bit : file_coded)
 		{

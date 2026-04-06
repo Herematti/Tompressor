@@ -68,7 +68,7 @@ pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> uncompress(vector<bool> c
 	vector<bool> path = {};
 
 	const int NAME_SIZE_LENGTH = 8;
-	const int CONTENT_SIZE_LENGTH = 32;
+	const int CONTENT_SIZE_LENGTH = 40;
 
 	int i = OVERFLOW_LENGTH + TREESIZE_LENGTH + treeLength;
 	while (i < compressed.size())
