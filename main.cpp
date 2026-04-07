@@ -14,6 +14,7 @@
 #include <cstring>
 #include <filesystem>
 #include "secret.hpp"
+#include "progressbar.hpp"
 
 using namespace std;
 namespace fs = filesystem;
@@ -37,6 +38,7 @@ int main(int argc, char *argv[])
 		if (strcmp(argv[1], "-o") == 0)
 		{
 			super_secret_func();
+			return 0;
 		}
 
 		if (strcmp(argv[1], "-h") == 0)

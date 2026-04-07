@@ -135,7 +135,7 @@ Node MinHeap::pop()
 Node MinHeap::top()
 {
 	if (size() == 0)
-		return -1;
+		throw runtime_error("tried to top empty heap");
 
 	return storage[1];
 }

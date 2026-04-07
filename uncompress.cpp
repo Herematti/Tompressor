@@ -128,8 +128,8 @@ pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> uncompress(vector<bool> c
 		// cout << "\t" << compressed.size() - i;
 		// cout << "\n";
 
-		int contentLength = 0;
-		for (int j = 0; j < CONTENT_SIZE_LENGTH; j++)
+		uint64_t contentLength = 0;
+		for (uint64_t j = 0; j < CONTENT_SIZE_LENGTH; j++)
 		{
 			update_progressbar(i + j, compressed.size());
 			if (compressed[i + j])

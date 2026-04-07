@@ -70,6 +70,15 @@ vector<bool> final_binary(vector<vector<uint8_t>> bytes, vector<bool> binary_tre
 	*/
 
 	//ale śmietnik nienawidze tego kodu
+
+	uint64_t full_size = 0;
+	for (auto file : bytes)
+	{
+		full_size += file.size();
+	}
+	uint64_t progress = 0;
+
+	generate_progressbar("COMPRESSING");
 	for (int i = 0; i < bytes.size(); i++)
 	{
 
@@ -108,6 +117,9 @@ vector<bool> final_binary(vector<vector<uint8_t>> bytes, vector<bool> binary_tre
 		vector<bool> file_coded;
 		for (uint8_t byte : bytes[i])
 		{
+			update_progressbar(progress, full_size);
+			progress++;
+
 			vector<bool> temp = mapped_bytes[byte];
 			for (bool bit : temp)
 			{
@@ -120,7 +132,7 @@ vector<bool> final_binary(vector<vector<uint8_t>> bytes, vector<bool> binary_tre
 		if (file_size > (1ULL << 40) - 1)
 		{
 			string file_name(binary_file_names[i].begin(), binary_file_names[i].end());
-			throw runtime_error("Compressed file content: \"" + file_name + "\" exeeds the limit of 2^32 bits");
+			throw runtime_error("Compressed file content: \"" + file_name + "\" exeeds the limit of 2^40 bits");
 		}
 
 		mask = 1ULL << 39;
