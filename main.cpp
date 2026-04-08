@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 	{
 		MinHeap heapson;
 
-		if(argc < 2)
+		if (argc < 2)
 		{
 			throw runtime_error("No arguments given");
 		}
@@ -58,11 +58,7 @@ int main(int argc, char *argv[])
 			return 0;
 		}
 
-		// bool ifCompression = (argv[1] == "-c");
-
-		// cout << "ifcompression: " << argv[1];
-
-		if (strcmp(argv[1], "-c") == 0)	
+		if (strcmp(argv[1], "-c") == 0)
 		{
 			if (argc < 4)
 			{
@@ -82,10 +78,10 @@ int main(int argc, char *argv[])
 
 			vector<vector<uint8_t>> binary_file_names;
 
-			for (string file_name : file_names)
+			for (const string &file_name : file_names)
 			{
 				vector<uint8_t> temp;
-				for (auto charr : file_name)
+				for (const auto &charr : file_name)
 				{
 					temp.push_back((uint8_t)charr);
 				}
@@ -94,7 +90,7 @@ int main(int argc, char *argv[])
 
 			vector<vector<uint8_t>> bytes;
 
-			for (string file_path : file_paths)
+			for (const string &file_path : file_paths)
 			{
 				vector<uint8_t> temp = open_file(file_path);
 
@@ -102,7 +98,7 @@ int main(int argc, char *argv[])
 			}
 
 			unsigned long long og_file_len = 0;
-			for (auto file_bytes : bytes)
+			for (const auto &file_bytes : bytes)
 			{
 				og_file_len += 8 * file_bytes.size();
 			}
@@ -114,7 +110,7 @@ int main(int argc, char *argv[])
 				map<uint8_t, int> mapped_bytes = map_bytes(bytes);
 				add_map_bytes(binary_file_names, mapped_bytes);
 
-				for (auto byte : mapped_bytes)
+				for (const auto &byte : mapped_bytes)
 				{
 					heapson.addNode(byte.second, byte.first);
 				}
@@ -147,30 +143,23 @@ int main(int argc, char *argv[])
 
 			auto file_path = argv[2];
 			auto target_path = argv[3];
-			// huffman.print();
-			// cout << "\n";
-			vector<uint8_t> bytes_to_unc = open_file(file_path);
+
 			vector<bool> bits_to_unc;
-
-			for (auto byte : bytes_to_unc)
 			{
-				uint8_t mask = 1 << 7;
+				vector<uint8_t> bytes_to_unc = open_file(file_path);
 
-				for (int i = 0; i < 8; i++)
+				for (const auto &byte : bytes_to_unc)
 				{
-					bits_to_unc.push_back(byte & mask);
-					mask = mask >> 1;
+					uint8_t mask = 1 << 7;
+
+					for (int i = 0; i < 8; i++)
+					{
+						bits_to_unc.push_back(byte & mask);
+						mask = mask >> 1;
+					}
 				}
 			}
-
 			auto unc = uncompress(bits_to_unc);
-
-			// cout << "\n--uncompressed--\n";
-			// for (auto u : unc)
-			// {
-			// 	cout << (char)u;
-			// }
-			// cout << "\n--uncompressed--\n";
 
 			write_files(unc, target_path);
 		}

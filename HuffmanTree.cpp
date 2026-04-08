@@ -139,7 +139,6 @@ void HuffmanTree::binary_tree_helper(Node *node, bool direction, vector<bool> &b
 		for (int i = 0; i < 8; i++)
 		{
 			bits.push_back(node->key & mask);
-			// cout << "mask: " << (int)mask << " ";
 			mask = mask >> 1;
 		}
 	}

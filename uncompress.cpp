@@ -10,13 +10,6 @@ const int TREESIZE_LENGTH = 16;
 
 pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> uncompress(vector<bool> compressed)
 {
-	// cout << "FULL STARTING: \n";
-	// for (auto b : compressed)
-	// {
-	// 	cout << b;
-	// }
-	// cout << "\n";
-
 	vector<vector<uint8_t>> uncompressedFileNames;
 	vector<vector<uint8_t>> uncompressedContents;
 
@@ -54,16 +47,7 @@ pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> uncompress(vector<bool> c
 		binary_tree.push(compressed[i]);
 	}
 
-	// cout << "\nbinary tree:\n";
-	// for(bool bit : binary_tree)
-	// {
-	// 	cout << bit;
-	// }
-	// cout << "\n";
-
 	HuffmanTree tree(binary_tree);
-
-	// tree.print();
 
 	vector<bool> path = {};
 
@@ -74,13 +58,6 @@ pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> uncompress(vector<bool> c
 	while (i < compressed.size())
 	{
 		update_progressbar(i, compressed.size());
-		// cout << "START: ";
-		// for (int j = i; j < compressed.size(); j++)
-		// {
-		// 	cout << compressed[j];
-		// }
-		// cout << "\t" << compressed.size() - i;
-		// cout << "\n";
 
 		int fileNameLength = 0;
 		for (int j = 0; j < NAME_SIZE_LENGTH; j++)
@@ -93,14 +70,6 @@ pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> uncompress(vector<bool> c
 		}
 
 		i += NAME_SIZE_LENGTH;
-
-		// cout << "NameL: ";
-		// for (int j = i; j < compressed.size(); j++)
-		// {
-		// 	cout << compressed[j];
-		// }
-		// cout << "\t" << compressed.size() - i;
-		// cout << "\n";
 
 		vector<uint8_t> uncompressed;
 
@@ -120,14 +89,6 @@ pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> uncompress(vector<bool> c
 		uncompressed = {};
 		i += fileNameLength;
 
-		// cout << "Name : ";
-		// for (int j = i; j < compressed.size(); j++)
-		// {
-		// 	cout << compressed[j];
-		// }
-		// cout << "\t" << compressed.size() - i;
-		// cout << "\n";
-
 		uint64_t contentLength = 0;
 		for (uint64_t j = 0; j < CONTENT_SIZE_LENGTH; j++)
 		{
@@ -138,14 +99,6 @@ pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> uncompress(vector<bool> c
 			}
 		}
 		i += CONTENT_SIZE_LENGTH;
-
-		// cout << "ContL: ";
-		// for (int j = i; j < compressed.size(); j++)
-		// {
-		// 	cout << compressed[j];
-		// }
-		// cout << "\t" << compressed.size() - i;
-		// cout << "\n";
 
 		for (int j = 0; j < contentLength; j++)
 		{
@@ -161,42 +114,12 @@ pair<vector<vector<uint8_t>>, vector<vector<uint8_t>>> uncompress(vector<bool> c
 		}
 		i += contentLength;
 
-		// cout << "ContZ: ";
-		// for (int j = i; j < compressed.size(); j++)
-		// {
-		// 	cout << compressed[j];
-		// }
-		// cout << "\t" << compressed.size() - i;
-		// cout << "\n";
-
 		uncompressedContents.push_back(uncompressed);
 		uncompressed = {};
 	}
 
 	force_finish_progressbar();
 	cout << "\nuncompression succesful\n\n";
-	//super_secret_func();
-
-	// cout << "filenames: ";
-	// for (auto uncompressedFilename : uncompressedFileNames)
-	// {
-	// 	for (auto c : uncompressedFilename)
-	// 	{
-	// 		cout << (char)c;
-	// 	}
-	// 	cout << "\n";
-	// }
-	// cout << "\n";
-
-	// cout << "contents: ";
-	// for (auto uncompressedcontent : uncompressedContents)
-	// {
-	// 	for (auto c : uncompressedcontent)
-	// 	{
-	// 		cout << (char)c;
-	// 	}
-	// 	cout << "\n";
-	// }
 
 	return {uncompressedFileNames, uncompressedContents};
 }
